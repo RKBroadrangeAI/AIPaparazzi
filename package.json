@@ -1,0 +1,13 @@
+{
+  "name": "paparazzibybiz-website",
+  "version": "1.0.0",
+  "description": "Modern B2C website for PaparazziByBiz.com with AI CRM and Product Catalog integration",
+  "scripts": {
+    "dev": "npx live-server --port=3000 --open=/ --watch=.",
+    "build": "echo 'Static site - ready for deployment'",
+    "lint": "npx htmlhint '**/*.html' && npx stylelint '**/*.css'"
+  },
+  "keywords": ["paparazzi", "jewelry", "b2c", "ecommerce"],
+  "author": "PaparazziByBiz",
+  "license": "PROPRIETARY"
+}

@@ -1,0 +1,275 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="description" content="View product details - Paparazzi by Biz $5 jewelry and accessories.">
+  <title>Product Details | Paparazzi by Biz</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;500;600;700&family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+  <link rel="stylesheet" href="css/styles.css">
+  <link rel="stylesheet" href="css/components.css">
+  <link rel="stylesheet" href="css/responsive.css">
+</head>
+<body>
+  <!-- ANNOUNCEMENT BAR -->
+  <div class="announcement-bar">
+    <div class="container"><p>✨ <strong>FREE SHIPPING</strong> on orders over $25! ✨</p></div>
+  </div>
+
+  <!-- NAVIGATION -->
+  <header class="header" id="header">
+    <div class="container">
+      <nav class="nav">
+        <button class="nav__mobile-toggle" id="mobileToggle" aria-label="Toggle menu"><span></span><span></span><span></span></button>
+        <a href="/" class="nav__logo"><span class="nav__logo-accent">Paparazzi</span><span class="nav__logo-sub">by Biz</span></a>
+        <ul class="nav__links" id="navLinks">
+          <li><a href="/" class="nav__link">Home</a></li>
+          <li><a href="shop.html" class="nav__link">Shop</a></li>
+          <li><a href="about.html" class="nav__link">About</a></li>
+          <li><a href="contact.html" class="nav__link">Contact</a></li>
+        </ul>
+        <div class="nav__actions">
+          <button class="nav__action-btn" id="searchToggle" aria-label="Search"><i class="fas fa-search"></i></button>
+          <a href="#" class="nav__action-btn" aria-label="Wishlist"><i class="fas fa-heart"></i><span class="nav__badge" id="wishlistCount">0</span></a>
+          <a href="cart.html" class="nav__action-btn" aria-label="Cart"><i class="fas fa-shopping-bag"></i><span class="nav__badge" id="cartCount">0</span></a>
+        </div>
+      </nav>
+    </div>
+  </header>
+
+  <!-- BREADCRUMB -->
+  <div class="container">
+    <nav class="breadcrumb" style="padding: 1rem 0;">
+      <a href="/">Home</a> <span>/</span> <a href="shop.html">Shop</a> <span>/</span> <span id="productBreadcrumb">Product</span>
+    </nav>
+  </div>
+
+  <!-- PRODUCT DETAIL -->
+  <section class="product-detail section">
+    <div class="container">
+      <div class="product-detail__layout">
+        <!-- Product Images -->
+        <div class="product-detail__gallery">
+          <div class="product-detail__main-image" id="mainImage">
+            <div class="product-card__placeholder product-detail__placeholder" style="background: linear-gradient(135deg, #f7d794, #f19066); min-height: 500px;">
+              <i class="fas fa-gem" style="font-size: 4rem;"></i>
+            </div>
+          </div>
+          <div class="product-detail__thumbnails" id="thumbnails">
+            <button class="product-detail__thumb active" style="background: linear-gradient(135deg, #f7d794, #f19066);"></button>
+            <button class="product-detail__thumb" style="background: linear-gradient(135deg, #f7d794, #e17055);"></button>
+            <button class="product-detail__thumb" style="background: linear-gradient(135deg, #fdcb82, #f19066);"></button>
+            <button class="product-detail__thumb" style="background: linear-gradient(135deg, #f7d794, #f5a623);"></button>
+          </div>
+        </div>
+
+        <!-- Product Info -->
+        <div class="product-detail__info">
+          <span class="product-detail__category" id="productCategory">Necklaces</span>
+          <h1 class="product-detail__title" id="productTitle">Golden Sunrise Pendant</h1>
+          
+          <div class="product-detail__rating">
+            <div class="stars">
+              <i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star-half-alt"></i>
+            </div>
+            <span class="product-detail__reviews-count">(42 reviews)</span>
+            <a href="#reviews" class="product-detail__write-review">Write a Review</a>
+          </div>
+
+          <div class="product-detail__price">
+            <span class="product-detail__price-current">$5.00</span>
+            <span class="product-detail__price-badge">Best Value</span>
+          </div>
+
+          <p class="product-detail__description" id="productDescription">
+            Elevate your everyday look with the stunning Golden Sunrise Pendant. This eye-catching necklace features a radiant gold-toned pendant with intricate detailing that catches the light beautifully. Perfect for layering or wearing alone as a statement piece.
+          </p>
+
+          <div class="product-detail__features">
+            <div class="product-detail__feature">
+              <i class="fas fa-check-circle"></i> Lead & Nickel Free
+            </div>
+            <div class="product-detail__feature">
+              <i class="fas fa-check-circle"></i> Adjustable Length
+            </div>
+            <div class="product-detail__feature">
+              <i class="fas fa-check-circle"></i> Lobster Claw Clasp
+            </div>
+          </div>
+
+          <div class="product-detail__quantity">
+            <label>Quantity:</label>
+            <div class="quantity-selector">
+              <button class="quantity-btn" id="qtyMinus">-</button>
+              <input type="number" class="quantity-input" id="qtyInput" value="1" min="1" max="10">
+              <button class="quantity-btn" id="qtyPlus">+</button>
+            </div>
+          </div>
+
+          <div class="product-detail__actions">
+            <button class="btn btn--primary btn--lg btn--full" id="addToCartBtn">
+              <i class="fas fa-shopping-bag"></i> Add to Bag
+            </button>
+            <button class="btn btn--outline btn--lg" id="addToWishlistBtn">
+              <i class="far fa-heart"></i>
+            </button>
+          </div>
+
+          <div class="product-detail__meta">
+            <div class="product-detail__meta-item">
+              <i class="fas fa-shipping-fast"></i>
+              <div>
+                <strong>Free Shipping</strong>
+                <span>On orders over $25</span>
+              </div>
+            </div>
+            <div class="product-detail__meta-item">
+              <i class="fas fa-sync-alt"></i>
+              <div>
+                <strong>Easy Returns</strong>
+                <span>30-day return policy</span>
+              </div>
+            </div>
+            <div class="product-detail__meta-item">
+              <i class="fas fa-shield-alt"></i>
+              <div>
+                <strong>Secure Payment</strong>
+                <span>SSL encrypted checkout</span>
+              </div>
+            </div>
+          </div>
+
+          <div class="product-detail__share">
+            <span>Share:</span>
+            <a href="#" aria-label="Share on Facebook"><i class="fab fa-facebook-f"></i></a>
+            <a href="#" aria-label="Share on Twitter"><i class="fab fa-twitter"></i></a>
+            <a href="#" aria-label="Share on Pinterest"><i class="fab fa-pinterest-p"></i></a>
+            <a href="#" aria-label="Copy link"><i class="fas fa-link"></i></a>
+          </div>
+        </div>
+      </div>
+
+      <!-- Product Tabs -->
+      <div class="product-tabs">
+        <div class="product-tabs__nav">
+          <button class="product-tabs__btn active" data-tab="description">Description</button>
+          <button class="product-tabs__btn" data-tab="details">Details & Care</button>
+          <button class="product-tabs__btn" data-tab="reviews">Reviews (42)</button>
+        </div>
+        <div class="product-tabs__content">
+          <div class="product-tab active" id="tab-description">
+            <p>The Golden Sunrise Pendant is the perfect addition to your jewelry collection. Its warm, golden tones complement any skin tone and can be dressed up or down for any occasion.</p>
+            <ul>
+              <li>Gold-toned pendant with sunburst design</li>
+              <li>Chain length: 16" + 3" extender</li>
+              <li>Pendant size: approximately 1.5" diameter</li>
+              <li>Lobster claw clasp closure</li>
+            </ul>
+          </div>
+          <div class="product-tab" id="tab-details">
+            <h4>Materials</h4>
+            <p>Lead-free, nickel-free alloy with gold-tone plating.</p>
+            <h4>Care Instructions</h4>
+            <ul>
+              <li>Store in a cool, dry place</li>
+              <li>Avoid contact with water, perfume, and lotions</li>
+              <li>Clean gently with a soft cloth</li>
+              <li>Remove before sleeping or exercising</li>
+            </ul>
+          </div>
+          <div class="product-tab" id="tab-reviews">
+            <div class="reviews" id="reviews">
+              <div class="review">
+                <div class="review__header">
+                  <div class="review__stars">
+                    <i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i>
+                  </div>
+                  <span class="review__date">Feb 15, 2026</span>
+                </div>
+                <h4 class="review__author">Sarah M. <span class="review__badge">Verified</span></h4>
+                <p class="review__text">Absolutely gorgeous! The pendant catches the light so beautifully. I get compliments every time I wear it. Can't believe it's only $5!</p>
+              </div>
+              <div class="review">
+                <div class="review__header">
+                  <div class="review__stars">
+                    <i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star-half-alt"></i>
+                  </div>
+                  <span class="review__date">Feb 10, 2026</span>
+                </div>
+                <h4 class="review__author">Jessica L. <span class="review__badge">Verified</span></h4>
+                <p class="review__text">Such a beautiful necklace for the price! The chain is a nice length and the pendant is the perfect size. My only wish is that it was a little heavier.</p>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Related Products -->
+      <div class="related-products">
+        <h2 class="section__title">You May Also Love</h2>
+        <div class="products-grid" id="relatedProducts">
+          <!-- Populated by catalog.js -->
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- FOOTER -->
+  <footer class="footer">
+    <div class="container">
+      <div class="footer__grid">
+        <div class="footer__col footer__col--brand">
+          <a href="/" class="footer__logo"><span class="footer__logo-accent">Paparazzi</span><span class="footer__logo-sub">by Biz</span></a>
+          <p class="footer__tagline">Stunning $5 jewelry and accessories for every occasion.</p>
+        </div>
+        <div class="footer__col">
+          <h4 class="footer__heading">Shop</h4>
+          <ul class="footer__links">
+            <li><a href="shop.html?col=new-arrivals">New Arrivals</a></li>
+            <li><a href="shop.html?col=best-sellers">Best Sellers</a></li>
+          </ul>
+        </div>
+        <div class="footer__col">
+          <h4 class="footer__heading">Help</h4>
+          <ul class="footer__links">
+            <li><a href="contact.html">Contact Us</a></li>
+            <li><a href="#">FAQs</a></li>
+          </ul>
+        </div>
+      </div>
+      <div class="footer__bottom">
+        <p>&copy; 2026 Paparazzi by Biz. All rights reserved.</p>
+      </div>
+    </div>
+  </footer>
+
+  <!-- CHATBOT -->
+  <div class="chatbot" id="chatbot">
+    <button class="chatbot__trigger" id="chatbotTrigger" aria-label="Chat with us"><i class="fas fa-comments"></i><span class="chatbot__pulse"></span></button>
+    <div class="chatbot__window" id="chatbotWindow">
+      <div class="chatbot__header">
+        <div class="chatbot__header-info"><div class="chatbot__avatar">💎</div><div><h4>Biz's Style Assistant</h4><span class="chatbot__status">Online</span></div></div>
+        <button class="chatbot__close" id="chatbotClose"><i class="fas fa-times"></i></button>
+      </div>
+      <div class="chatbot__messages" id="chatbotMessages"></div>
+      <div class="chatbot__quick-replies" id="chatbotQuickReplies"></div>
+      <form class="chatbot__input-form" id="chatbotForm">
+        <input type="text" class="chatbot__input" id="chatbotInput" placeholder="Ask me anything...">
+        <button type="submit" class="chatbot__send"><i class="fas fa-paper-plane"></i></button>
+      </form>
+    </div>
+  </div>
+
+  <button class="back-to-top" id="backToTop" aria-label="Back to top"><i class="fas fa-chevron-up"></i></button>
+
+  <script src="config/integrations.js"></script>
+  <script src="js/animations.js"></script>
+  <script src="js/catalog.js"></script>
+  <script src="js/cart.js"></script>
+  <script src="js/crm.js"></script>
+  <script src="js/app.js"></script>
+</body>
+</html>

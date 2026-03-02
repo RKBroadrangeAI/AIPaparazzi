@@ -1,0 +1,158 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="description" content="Your shopping bag - Paparazzi by Biz $5 jewelry and accessories.">
+  <title>Shopping Bag | Paparazzi by Biz</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;500;600;700&family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+  <link rel="stylesheet" href="css/styles.css">
+  <link rel="stylesheet" href="css/components.css">
+  <link rel="stylesheet" href="css/responsive.css">
+</head>
+<body>
+  <!-- ANNOUNCEMENT BAR -->
+  <div class="announcement-bar">
+    <div class="container"><p>✨ <strong>FREE SHIPPING</strong> on orders over $25! ✨</p></div>
+  </div>
+
+  <!-- NAVIGATION -->
+  <header class="header" id="header">
+    <div class="container">
+      <nav class="nav">
+        <button class="nav__mobile-toggle" id="mobileToggle" aria-label="Toggle menu"><span></span><span></span><span></span></button>
+        <a href="/" class="nav__logo"><span class="nav__logo-accent">Paparazzi</span><span class="nav__logo-sub">by Biz</span></a>
+        <ul class="nav__links" id="navLinks">
+          <li><a href="/" class="nav__link">Home</a></li>
+          <li><a href="shop.html" class="nav__link">Shop</a></li>
+          <li><a href="about.html" class="nav__link">About</a></li>
+          <li><a href="contact.html" class="nav__link">Contact</a></li>
+        </ul>
+        <div class="nav__actions">
+          <a href="cart.html" class="nav__action-btn" aria-label="Cart"><i class="fas fa-shopping-bag"></i><span class="nav__badge" id="cartCount">0</span></a>
+        </div>
+      </nav>
+    </div>
+  </header>
+
+  <!-- PAGE HERO -->
+  <section class="page-hero">
+    <div class="container">
+      <nav class="breadcrumb"><a href="/">Home</a> <span>/</span> <span>Shopping Bag</span></nav>
+      <h1 class="page-hero__title">Your Bag</h1>
+    </div>
+  </section>
+
+  <!-- CART CONTENT -->
+  <section class="cart-page section">
+    <div class="container">
+      <!-- Empty Cart State -->
+      <div class="cart-empty" id="cartEmpty">
+        <div class="cart-empty__icon"><i class="fas fa-shopping-bag"></i></div>
+        <h2>Your bag is empty</h2>
+        <p>Looks like you haven't added any sparkle yet!</p>
+        <a href="shop.html" class="btn btn--primary btn--lg">Start Shopping <i class="fas fa-arrow-right"></i></a>
+      </div>
+
+      <!-- Cart with items -->
+      <div class="cart-content" id="cartContent" style="display: none;">
+        <div class="cart-layout">
+          <!-- Cart Items -->
+          <div class="cart-items" id="cartItems">
+            <!-- Cart items rendered by cart.js -->
+          </div>
+
+          <!-- Order Summary -->
+          <div class="cart-summary">
+            <h3 class="cart-summary__title">Order Summary</h3>
+            <div class="cart-summary__row">
+              <span>Subtotal</span>
+              <span id="cartSubtotal">$0.00</span>
+            </div>
+            <div class="cart-summary__row">
+              <span>Shipping</span>
+              <span id="cartShipping">Calculated at checkout</span>
+            </div>
+            <div class="cart-summary__row cart-summary__row--promo">
+              <form class="promo-form" id="promoForm">
+                <input type="text" placeholder="Promo code" id="promoInput">
+                <button type="submit" class="btn btn--outline btn--sm">Apply</button>
+              </form>
+            </div>
+            <div class="cart-summary__row cart-summary__row--total">
+              <span>Total</span>
+              <span id="cartTotal">$0.00</span>
+            </div>
+            <div class="cart-summary__free-shipping" id="freeShippingMsg">
+              <i class="fas fa-truck"></i>
+              <span>Add <strong id="freeShippingRemaining">$25.00</strong> more for FREE shipping!</span>
+            </div>
+            <div class="cart-summary__progress">
+              <div class="cart-summary__progress-bar" id="shippingProgress" style="width: 0%;"></div>
+            </div>
+            <button class="btn btn--primary btn--lg btn--full" id="checkoutBtn">
+              Proceed to Checkout <i class="fas fa-lock"></i>
+            </button>
+            <div class="cart-summary__trust">
+              <div><i class="fas fa-shield-alt"></i> Secure Checkout</div>
+              <div><i class="fas fa-sync-alt"></i> 30-Day Returns</div>
+            </div>
+            <div class="cart-summary__payment-icons">
+              <i class="fab fa-cc-visa"></i><i class="fab fa-cc-mastercard"></i><i class="fab fa-cc-amex"></i><i class="fab fa-cc-paypal"></i>
+            </div>
+          </div>
+        </div>
+
+        <!-- Continue Shopping -->
+        <div class="cart-continue">
+          <a href="shop.html" class="btn btn--outline"><i class="fas fa-arrow-left"></i> Continue Shopping</a>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- FOOTER -->
+  <footer class="footer">
+    <div class="container">
+      <div class="footer__grid">
+        <div class="footer__col footer__col--brand">
+          <a href="/" class="footer__logo"><span class="footer__logo-accent">Paparazzi</span><span class="footer__logo-sub">by Biz</span></a>
+          <p class="footer__tagline">Stunning $5 jewelry and accessories for every occasion.</p>
+        </div>
+        <div class="footer__col"><h4 class="footer__heading">Shop</h4><ul class="footer__links"><li><a href="shop.html">Browse All</a></li></ul></div>
+        <div class="footer__col"><h4 class="footer__heading">Help</h4><ul class="footer__links"><li><a href="contact.html">Contact Us</a></li></ul></div>
+      </div>
+      <div class="footer__bottom"><p>&copy; 2026 Paparazzi by Biz. All rights reserved.</p></div>
+    </div>
+  </footer>
+
+  <!-- CHATBOT -->
+  <div class="chatbot" id="chatbot">
+    <button class="chatbot__trigger" id="chatbotTrigger" aria-label="Chat"><i class="fas fa-comments"></i><span class="chatbot__pulse"></span></button>
+    <div class="chatbot__window" id="chatbotWindow">
+      <div class="chatbot__header">
+        <div class="chatbot__header-info"><div class="chatbot__avatar">💎</div><div><h4>Biz's Style Assistant</h4><span class="chatbot__status">Online</span></div></div>
+        <button class="chatbot__close" id="chatbotClose"><i class="fas fa-times"></i></button>
+      </div>
+      <div class="chatbot__messages" id="chatbotMessages"></div>
+      <div class="chatbot__quick-replies" id="chatbotQuickReplies"></div>
+      <form class="chatbot__input-form" id="chatbotForm">
+        <input type="text" class="chatbot__input" id="chatbotInput" placeholder="Ask me anything...">
+        <button type="submit" class="chatbot__send"><i class="fas fa-paper-plane"></i></button>
+      </form>
+    </div>
+  </div>
+
+  <button class="back-to-top" id="backToTop" aria-label="Back to top"><i class="fas fa-chevron-up"></i></button>
+
+  <script src="config/integrations.js"></script>
+  <script src="js/animations.js"></script>
+  <script src="js/catalog.js"></script>
+  <script src="js/cart.js"></script>
+  <script src="js/crm.js"></script>
+  <script src="js/app.js"></script>
+</body>
+</html>
