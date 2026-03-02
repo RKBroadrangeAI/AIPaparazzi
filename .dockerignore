@@ -1,0 +1,7 @@
+pbiz-crm/
+.git/
+.gitignore
+Dockerfile
+railway.toml
+nginx.conf
+README.md
