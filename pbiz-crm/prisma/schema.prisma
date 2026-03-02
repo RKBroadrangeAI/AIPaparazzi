@@ -1,0 +1,325 @@
+generator client {
+  provider = "prisma-client-js"
+  output   = "../src/generated/prisma"
+}
+
+datasource db {
+  provider = "postgresql"
+}
+
+// ─── Auth & Users ────────────────────────────────────────
+model PbizUser {
+  id           String   @id @default(cuid())
+  email        String   @unique
+  passwordHash String
+  firstName    String
+  lastName     String
+  role         String   @default("CONSULTANT") // ADMIN, MANAGER, CONSULTANT
+  avatarUrl    String?
+  isOnline     Boolean  @default(true)
+  specialties  String?  // e.g. "streetwear,formal,activewear"
+  createdAt    DateTime @default(now())
+  updatedAt    DateTime @updatedAt
+
+  leads      PbizLead[]
+  deals      PbizDeal[]
+  activities PbizActivity[]
+}
+
+// ─── Sales Consultants (Reps) ────────────────────────────
+model PbizConsultant {
+  id               String   @id @default(cuid())
+  name             String
+  email            String   @unique
+  specialties      String   @default("") // fashion categories
+  capacityPerDay   Int      @default(8)
+  currentLoad      Int      @default(0)
+  schedule         String   @default("{}")
+  isSenior         Boolean  @default(false)
+  isActive         Boolean  @default(true)
+  avatarUrl        String?
+  roundRobinOrder  Int      @default(0)
+  totalAssigned    Int      @default(0)
+  totalValue       Float    @default(0)
+  createdAt        DateTime @default(now())
+  updatedAt        DateTime @updatedAt
+
+  leads          PbizLead[]
+  assignmentLogs PbizAssignmentLog[]
+  messages       PbizMessage[]
+  appointments   PbizAppointment[]
+  tasks          PbizTask[]
+  followUps      PbizFollowUp[]
+}
+
+// ─── Leads ───────────────────────────────────────────────
+model PbizLead {
+  id              String   @id @default(cuid())
+  firstName       String
+  lastName        String
+  email           String?
+  phone           String?
+  source          String   // WEBSITE, INSTAGRAM, TIKTOK, REFERRAL, WALK_IN, EVENT
+  status          String   @default("NEW") // NEW, CONTACTED, QUALIFIED, CONVERTED, LOST
+  temperature     String   @default("COLD") // COLD, WARM, HOT
+  aiScore         Int      @default(0)
+  aiScoreReason   String?
+  aiNextAction    String?
+  styleInterest   String?  // casual, formal, streetwear, activewear, etc.
+  sizePreference  String?  // XS, S, M, L, XL, etc.
+  estimatedBudget Float?
+  notes           String?
+  referredBy      String?
+  assignedToId    String?
+  assignedTo      PbizUser? @relation(fields: [assignedToId], references: [id])
+  consultantId    String?
+  consultant      PbizConsultant? @relation(fields: [consultantId], references: [id])
+  customerId      String?
+  customer        PbizCustomer? @relation(fields: [customerId], references: [id])
+  createdAt       DateTime @default(now())
+  updatedAt       DateTime @updatedAt
+
+  assignmentLogs PbizAssignmentLog[]
+  messages       PbizMessage[]
+  tasks          PbizTask[]
+  followUps      PbizFollowUp[]
+}
+
+// ─── Customers ───────────────────────────────────────────
+model PbizCustomer {
+  id              String    @id @default(cuid())
+  firstName       String
+  lastName        String
+  email           String?   @unique
+  phone           String?
+  isVip           Boolean   @default(false)
+  totalSpend      Float     @default(0)
+  aiScore         Int       @default(0)
+  aiSummary       String?
+  notes           String?
+  preferences     String?   // JSON: style, sizes, colors, brands
+  sizeProfile     String?   // JSON: top, bottom, shoes, etc.
+  lifeEvents      String?
+  shopifyId       String?
+  lastContactAt   DateTime?
+  customerSince   DateTime  @default(now())
+  createdAt       DateTime  @default(now())
+  updatedAt       DateTime  @updatedAt
+
+  leads        PbizLead[]
+  deals        PbizDeal[]
+  orders       PbizOrder[]
+  activities   PbizActivity[]
+  messages     PbizMessage[]
+  appointments PbizAppointment[]
+  tasks        PbizTask[]
+  followUps    PbizFollowUp[]
+}
+
+// ─── Orders / Wardrobe History ───────────────────────────
+model PbizOrder {
+  id          String   @id @default(cuid())
+  orderNumber String?
+  items       String   // JSON array: [{name, category, size, color, price, qty}]
+  subtotal    Float
+  discount    Float    @default(0)
+  total       Float
+  status      String   @default("PENDING") // PENDING, CONFIRMED, SHIPPED, DELIVERED, RETURNED
+  channel     String   @default("ONLINE") // ONLINE, IN_STORE, INSTAGRAM, EVENT
+  customerId  String
+  customer    PbizCustomer @relation(fields: [customerId], references: [id])
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+}
+
+// ─── Deals / Pipeline ────────────────────────────────────
+model PbizDeal {
+  id           String   @id @default(cuid())
+  pipeline     String   // RETAIL, WHOLESALE, CUSTOM_ORDER, EVENT
+  stage        String   // INQUIRY, PROPOSAL, NEGOTIATION, CLOSED_WON, CLOSED_LOST
+  value        Float
+  temperature  String   @default("WARM")
+  daysInStage  Int      @default(0)
+  category     String   // clothing category
+  description  String?
+  customerId   String
+  customer     PbizCustomer @relation(fields: [customerId], references: [id])
+  assignedToId String?
+  assignedTo   PbizUser? @relation(fields: [assignedToId], references: [id])
+  createdAt    DateTime @default(now())
+  updatedAt    DateTime @updatedAt
+
+  followUps PbizFollowUp[]
+}
+
+// ─── Activity Log ────────────────────────────────────────
+model PbizActivity {
+  id            String   @id @default(cuid())
+  type          String   // CALL, EMAIL, SMS, NOTE, ORDER, MEETING, STYLE_CONSULT
+  title         String
+  description   String
+  actorName     String
+  userId        String?
+  user          PbizUser? @relation(fields: [userId], references: [id])
+  customerId    String?
+  customer      PbizCustomer? @relation(fields: [customerId], references: [id])
+  messageId     String?
+  appointmentId String?
+  taskId        String?
+  createdAt     DateTime @default(now())
+}
+
+// ─── Assignment Log ──────────────────────────────────────
+model PbizAssignmentLog {
+  id           String   @id @default(cuid())
+  leadId       String
+  lead         PbizLead @relation(fields: [leadId], references: [id])
+  consultantId String
+  consultant   PbizConsultant @relation(fields: [consultantId], references: [id])
+  method       String   // ROUND_ROBIN, AI_MATCH, MANUAL
+  reason       String
+  createdAt    DateTime @default(now())
+}
+
+// ─── Messages ────────────────────────────────────────────
+model PbizMessage {
+  id           String   @id @default(cuid())
+  channel      String   // EMAIL, SMS, INSTAGRAM_DM, WHATSAPP
+  direction    String   // INBOUND, OUTBOUND
+  from         String
+  to           String
+  subject      String?
+  body         String
+  status       String   @default("SENT")
+  isAiDraft    Boolean  @default(false)
+  sentiment    String?
+  customerId   String?
+  customer     PbizCustomer? @relation(fields: [customerId], references: [id])
+  leadId       String?
+  lead         PbizLead? @relation(fields: [leadId], references: [id])
+  consultantId String?
+  consultant   PbizConsultant? @relation(fields: [consultantId], references: [id])
+  createdAt    DateTime @default(now())
+}
+
+// ─── Appointments ────────────────────────────────────────
+model PbizAppointment {
+  id           String   @id @default(cuid())
+  title        String
+  description  String?
+  type         String   @default("STYLE_CONSULT") // STYLE_CONSULT, FITTING, PICKUP, VIRTUAL
+  status       String   @default("SCHEDULED")
+  startTime    DateTime
+  endTime      DateTime
+  location     String?
+  customerId   String
+  customer     PbizCustomer @relation(fields: [customerId], references: [id])
+  consultantId String?
+  consultant   PbizConsultant? @relation(fields: [consultantId], references: [id])
+  notes        String?
+  createdAt    DateTime @default(now())
+  updatedAt    DateTime @updatedAt
+}
+
+// ─── Tasks ───────────────────────────────────────────────
+model PbizTask {
+  id           String    @id @default(cuid())
+  title        String
+  description  String?
+  priority     String    @default("MEDIUM")
+  status       String    @default("PENDING")
+  dueDate      DateTime?
+  completedAt  DateTime?
+  customerId   String?
+  customer     PbizCustomer? @relation(fields: [customerId], references: [id])
+  leadId       String?
+  lead         PbizLead? @relation(fields: [leadId], references: [id])
+  consultantId String?
+  consultant   PbizConsultant? @relation(fields: [consultantId], references: [id])
+  createdAt    DateTime  @default(now())
+  updatedAt    DateTime  @updatedAt
+}
+
+// ─── Message Templates ───────────────────────────────────
+model PbizMessageTemplate {
+  id        String   @id @default(cuid())
+  name      String
+  channel   String
+  subject   String?
+  body      String
+  category  String   @default("GENERAL") // GENERAL, PROMO, FOLLOW_UP, WELCOME, RESTOCK
+  isActive  Boolean  @default(true)
+  createdAt DateTime @default(now())
+}
+
+// ─── AI Interactions ─────────────────────────────────────
+model PbizAiInteraction {
+  id         String   @id @default(cuid())
+  role       String
+  content    String
+  toolCalls  String?
+  toolResult String?
+  model      String?
+  tokens     Int      @default(0)
+  createdAt  DateTime @default(now())
+}
+
+// ─── Social Mentions ─────────────────────────────────────
+model PbizSocialMention {
+  id         String    @id @default(cuid())
+  platform   String    // INSTAGRAM, TIKTOK, FACEBOOK, TWITTER
+  handle     String
+  content    String
+  category   String?   // clothing category mentioned
+  sentiment  String    @default("neutral")
+  engagement Int       @default(0)
+  isLead     Boolean   @default(false)
+  capturedAt DateTime?
+  createdAt  DateTime  @default(now())
+}
+
+// ─── Follow-Ups ──────────────────────────────────────────
+model PbizFollowUp {
+  id           String    @id @default(cuid())
+  title        String
+  description  String?
+  type         String    @default("CALL") // CALL, EMAIL, SMS, DM, STYLE_CONSULT
+  status       String    @default("PENDING")
+  priority     String    @default("MEDIUM")
+  dueAt        DateTime
+  reminderAt   DateTime?
+  completedAt  DateTime?
+  snoozedUntil DateTime?
+  notes        String?
+  customerId   String?
+  customer     PbizCustomer? @relation(fields: [customerId], references: [id])
+  leadId       String?
+  lead         PbizLead? @relation(fields: [leadId], references: [id])
+  dealId       String?
+  deal         PbizDeal? @relation(fields: [dealId], references: [id])
+  consultantId String?
+  consultant   PbizConsultant? @relation(fields: [consultantId], references: [id])
+  createdAt    DateTime  @default(now())
+  updatedAt    DateTime  @updatedAt
+}
+
+// ─── Inventory ───────────────────────────────────────────
+model PbizProduct {
+  id          String   @id @default(cuid())
+  name        String
+  sku         String?  @unique
+  category    String   // tops, bottoms, dresses, outerwear, accessories
+  subcategory String?
+  brand       String   @default("Paparazzi by Biz")
+  price       Float
+  costPrice   Float?
+  sizes       String   @default("[]") // JSON array of available sizes
+  colors      String   @default("[]") // JSON array of available colors
+  stockQty    Int      @default(0)
+  lowStockAt  Int      @default(5)
+  imageUrl    String?
+  description String?
+  isActive    Boolean  @default(true)
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+}
