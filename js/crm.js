@@ -15,45 +15,49 @@ const PBIZCRM = (() => {
   // AI Response templates for the fashion consultant chatbot
   const AI_RESPONSES = {
     greetings: [
-      "Hey gorgeous! 💎 Welcome to PaparazziByBiz! I'm your personal style consultant. What can I help you find today?",
-      "Hi there! ✨ So excited you're here! Looking for something sparkly? I'm here to help!",
-      "Welcome, beautiful! 💕 I'm Biz, your jewelry style assistant. Ask me anything!",
+      "Hey there! 👗 Welcome to PaparazziByBiz! I'm your wholesale style consultant. How can I help you today?",
+      "Hi! ✨ So glad you're here! Looking for the latest styles from our S/S 2026 collection? I'm here to help!",
+      "Welcome! 💕 I'm Biz's Style Assistant. Ask me about our wholesale women's fashion, trade shows, or sizing!",
     ],
     products: [
-      "Great taste! We have amazing pieces in that category. Let me show you our bestsellers!",
-      "Ooh, you'll love what we have! Everything is just $5 — trendy AND affordable! 🎉",
-      "Fun choice! Here are some gorgeous options that our customers are obsessing over right now!",
+      "Great taste! We have beautiful pieces in that category. Check out our newest arrivals from the S/S 2026 collection!",
+      "You'll love our selection! From embroidered details to reversible jackets — all designed in LA. Browse our collections!",
+      "Fun choice! Here are some gorgeous styles that boutique owners are loving right now!",
     ],
     pricing: [
-      "The best part about Paparazzi? EVERYTHING is just $5! 💰 Necklaces, earrings, bracelets, rings — all $5!",
-      "Girl, that's the beauty of it — every single piece is $5! You can grab a whole collection without breaking the bank! 🛍️",
+      "We offer competitive wholesale pricing for retail partners and boutique owners. Contact us or visit our Faire Market storefront for full pricing details! 💰",
+      "Our wholesale pricing is designed to give retailers great margins. Reach out to info@paparazzibybiz.com for a price list and minimum order details! 🛍️",
     ],
     shipping: [
-      "We ship nationwide! Orders over $25 get FREE shipping. Standard delivery is 3-5 business days. 📦",
-      "Shipping is $4.99, but spend $25+ and it's on us! Most orders arrive in 3-5 business days. 🚚",
+      "We ship nationwide! Most wholesale orders go out within 1–2 business days. Standard delivery is 3–5 business days. 📦",
+      "Shipping is fast — most orders ship in 1–2 days and arrive within 3–5 business days! Contact us for volume shipping rates. 🚚",
     ],
-    consultant: [
-      "Becoming a Paparazzi Consultant is amazing! You get to be your own boss, earn great commissions, and play with gorgeous jewelry all day! Want me to send you more info?",
-      "Love that you're interested! As a consultant, you earn 45% commission on every sale. Plus, our starter kit is super affordable. Shall I have someone reach out to you?",
+    retailPartner: [
+      "Becoming a Paparazzi by Biz retail partner is easy! Visit us at trade shows like Atlanta Apparel Market, browse our Faire storefront, or contact us directly. We'd love to work with your boutique!",
+      "We love working with boutique owners! You can order through Faire Market, meet us at upcoming trade shows, or email info@paparazzibybiz.com to get started.",
     ],
     returns: [
-      "We want you to love your jewelry! If something isn't quite right, reach out to us within 30 days and we'll make it right. 💝",
-      "No worries at all! We have a hassle-free return policy within 30 days. Just contact us and we'll take care of you!",
+      "We want you to love your order! If something isn't right, reach out within 30 days and we'll make it right. 💝",
+      "No worries! We have a hassle-free 30-day return policy. Just contact us and we'll take care of you!",
+    ],
+    tradeShows: [
+      "You can find us at these upcoming shows: Atlanta Apparel Market (March 30–April 2) and Trendz (April 19–21). We'd love to see you there! 🎪",
+      "We exhibit at major trade shows! Catch us at Atlanta Apparel Market and Trendz. We're also on Faire Market for easy online wholesale ordering.",
     ],
     default: [
-      "That's a great question! Let me connect you with our team for the best answer. Would you like to leave your email?",
-      "I'd love to help with that! For detailed assistance, you can reach us at hello@paparazzibybiz.com or I can have someone follow up!",
-      "Thanks for asking! While I look into that, feel free to browse our collections. Is there anything specific I can help you find?",
+      "That's a great question! Let me connect you with our team for the best answer. Reach us at info@paparazzibybiz.com or (213) 748-2900.",
+      "I'd love to help with that! For detailed assistance, email info@paparazzibybiz.com or call (213) 748-2900.",
+      "Thanks for asking! Browse our collections or contact us directly for more info. Is there anything specific I can help with?",
     ],
   };
 
   // Quick reply options
   const QUICK_REPLIES = [
-    { text: '💎 Browse Jewelry', action: 'browse' },
-    { text: '💰 Pricing Info', action: 'pricing' },
+    { text: '� Browse Styles', action: 'browse' },
+    { text: '💰 Wholesale Pricing', action: 'pricing' },
     { text: '🚚 Shipping Details', action: 'shipping' },
-    { text: '💼 Become a Consultant', action: 'consultant' },
-    { text: '📞 Contact Us', action: 'contact' },
+    { text: '🎪 Trade Shows', action: 'tradeshows' },
+    { text: '🤝 Become a Partner', action: 'partner' },
   ];
 
   /**
@@ -243,17 +247,20 @@ const PBIZCRM = (() => {
     if (msg.match(/hi|hello|hey|sup|what's up/)) {
       return pickRandom(AI_RESPONSES.greetings);
     }
-    if (msg.match(/necklace|earring|bracelet|ring|jewelry|jewellery|accessori|product/)) {
+    if (msg.match(/dress|top|blouse|jacket|cardigan|coordinate|resort|pant|skirt|kimono|clothing|fashion|style|product/)) {
       return pickRandom(AI_RESPONSES.products);
     }
-    if (msg.match(/price|cost|how much|\$|dollar|afford|cheap|expensive/)) {
+    if (msg.match(/price|cost|how much|\$|dollar|wholesale|minimum|order/)) {
       return pickRandom(AI_RESPONSES.pricing);
     }
     if (msg.match(/ship|deliver|order|track|arrival/)) {
       return pickRandom(AI_RESPONSES.shipping);
     }
-    if (msg.match(/consult|join|team|sell|business|partner|opportunity/)) {
-      return pickRandom(AI_RESPONSES.consultant);
+    if (msg.match(/partner|retail|boutique|store|buyer|wholesale account/)) {
+      return pickRandom(AI_RESPONSES.retailPartner);
+    }
+    if (msg.match(/trade show|atlanta|apparel|market|faire|trendz|exhibit/)) {
+      return pickRandom(AI_RESPONSES.tradeShows);
     }
     if (msg.match(/return|refund|exchange|broken|damage|wrong/)) {
       return pickRandom(AI_RESPONSES.returns);
@@ -264,10 +271,11 @@ const PBIZCRM = (() => {
 
   function handleQuickReply(action) {
     const mappings = {
-      browse: 'I want to browse your jewelry collection!',
-      pricing: 'How much does jewelry cost?',
+      browse: 'I want to browse your clothing collection!',
+      pricing: 'What are the wholesale prices?',
       shipping: 'What are the shipping options?',
-      consultant: "I'm interested in becoming a consultant",
+      tradeshows: 'What trade shows will you be at?',
+      partner: "I'm interested in becoming a retail partner",
       contact: 'How can I contact you?',
     };
 
@@ -302,7 +310,7 @@ const PBIZCRM = (() => {
     div.className = 'chatbot-message chatbot-message--bot';
     div.innerHTML = `
       <div class="chatbot-message__avatar">
-        <i class="fas fa-gem"></i>
+        <i class="fas fa-shirt"></i>
       </div>
       <div class="chatbot-message__content">${text}</div>
     `;
@@ -334,7 +342,7 @@ const PBIZCRM = (() => {
     const div = document.createElement('div');
     div.className = 'chatbot-message chatbot-message--bot chatbot-typing';
     div.innerHTML = `
-      <div class="chatbot-message__avatar"><i class="fas fa-gem"></i></div>
+      <div class="chatbot-message__avatar"><i class="fas fa-shirt"></i></div>
       <div class="chatbot-message__content">
         <div class="chatbot-typing-indicator">
           <span></span><span></span><span></span>

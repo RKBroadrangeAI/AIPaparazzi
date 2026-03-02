@@ -7,7 +7,7 @@ const PBIZ_CONFIG = {
   // ─── Site Info ───────────────────────────────────────────
   site: {
     name: 'Paparazzi by Biz',
-    tagline: 'Stunning $5 Jewelry & Accessories',
+    tagline: 'Wholesale Women\'s Fashion — Designed in LA',
     domain: 'paparazzibybiz.com',
     currency: 'USD',
     defaultLocale: 'en-US',
@@ -27,16 +27,16 @@ const PBIZ_CONFIG = {
     },
     chatbot: {
       enabled: true,
-      greeting: "Hi there! 💎 Welcome to Paparazzi by Biz! How can I help you find the perfect piece today?",
+      greeting: "Hi there! � Welcome to Paparazzi by Biz! How can I help you find the perfect style today?",
       quickReplies: [
         "Browse new arrivals",
-        "Track my order",
-        "Help me find a gift",
-        "Become a VIP member",
+        "Wholesale pricing",
+        "Trade show schedule",
+        "Become a retail partner",
         "Talk to support"
       ],
-      aiModel: 'gpt-4', // AI model for chatbot responses
-      contextPrompt: 'You are a friendly jewelry consultant for Paparazzi by Biz, a $5 jewelry and accessories brand. Help customers find perfect pieces, answer questions about products, and provide styling advice.',
+      aiModel: 'gpt-4',
+      contextPrompt: 'You are a friendly fashion consultant for Paparazzi by Biz, a wholesale women\'s clothing brand designed in Los Angeles. Help retail partners find styles, answer questions about wholesale pricing, trade shows, and sizing.',
     },
     // HubSpot-specific config
     hubspot: {
@@ -80,12 +80,12 @@ const PBIZ_CONFIG = {
       consumerSecret: '',
     },
     categories: [
-      { id: 'necklaces', name: 'Necklaces', icon: '📿' },
-      { id: 'earrings', name: 'Earrings', icon: '✨' },
-      { id: 'bracelets', name: 'Bracelets', icon: '💫' },
-      { id: 'rings', name: 'Rings', icon: '💍' },
-      { id: 'hair-accessories', name: 'Hair Accessories', icon: '🎀' },
-      { id: 'sets', name: 'Jewelry Sets', icon: '💎' },
+      { id: 'dresses', name: 'Dresses', icon: '👗' },
+      { id: 'tops', name: 'Tops', icon: '👚' },
+      { id: 'jackets', name: 'Jackets & Cardigans', icon: '🧥' },
+      { id: 'coordinates', name: 'Coordinates', icon: '✨' },
+      { id: 'resort-wear', name: 'Resort Wear', icon: '🌺' },
+      { id: 'pants-skirts', name: 'Pants & Skirts', icon: '👖' },
     ],
   },
 
