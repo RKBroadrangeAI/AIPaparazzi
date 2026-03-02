@@ -3,5 +3,4 @@ pbiz-crm/
 .gitignore
 Dockerfile
 railway.toml
-nginx.conf
 README.md
