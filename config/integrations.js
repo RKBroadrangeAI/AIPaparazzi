@@ -7,7 +7,7 @@ const PBIZ_CONFIG = {
   // ─── Site Info ───────────────────────────────────────────
   site: {
     name: 'Paparazzi by Biz',
-    tagline: 'Wholesale Women\'s Fashion — Designed in LA',
+    tagline: 'Women\'s Fashion — Designed in LA',
     domain: 'paparazzibybiz.com',
     currency: 'USD',
     defaultLocale: 'en-US',
@@ -15,9 +15,9 @@ const PBIZ_CONFIG = {
 
   // ─── AI CRM Integration ─────────────────────────────────
   crm: {
-    provider: 'custom', // 'hubspot' | 'salesforce' | 'zoho' | 'custom'
-    apiEndpoint: 'https://api.paparazzibybiz.com/crm',
-    apiKey: '', // Set via environment or server-side proxy
+    provider: 'custom',
+    // CRM API base URL — update to your Railway CRM URL once deployed
+    apiEndpoint: 'https://aipapcrm.up.railway.app',
     features: {
       leadCapture: true,
       chatbot: true,
@@ -27,31 +27,18 @@ const PBIZ_CONFIG = {
     },
     chatbot: {
       enabled: true,
-      greeting: "Hi there! � Welcome to Paparazzi by Biz! How can I help you find the perfect style today?",
+      greeting: "Hi there! 👗 Welcome to Paparazzi by Biz! How can I help you find the perfect style today?",
       quickReplies: [
         "Browse new arrivals",
-        "Wholesale pricing",
-        "Trade show schedule",
-        "Become a retail partner",
+        "Sizing help",
+        "Shipping info",
+        "Returns & exchanges",
         "Talk to support"
       ],
-      aiModel: 'gpt-4',
-      contextPrompt: 'You are a friendly fashion consultant for Paparazzi by Biz, a wholesale women\'s clothing brand designed in Los Angeles. Help retail partners find styles, answer questions about wholesale pricing, trade shows, and sizing.',
+      // Uses CRM's /api/public/chat endpoint powered by xAI Grok
+      useRemoteAI: true,
     },
-    // HubSpot-specific config
-    hubspot: {
-      portalId: '',
-      formIds: {
-        newsletter: '',
-        contact: '',
-        leadCapture: '',
-      },
-    },
-    // Salesforce-specific config
-    salesforce: {
-      instanceUrl: '',
-      clientId: '',
-    },
+
   },
 
   // ─── Product Catalog Integration ─────────────────────────

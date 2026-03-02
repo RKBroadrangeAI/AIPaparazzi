@@ -15,34 +15,34 @@ const PBIZCRM = (() => {
   // AI Response templates for the fashion consultant chatbot
   const AI_RESPONSES = {
     greetings: [
-      "Hey there! 👗 Welcome to PaparazziByBiz! I'm your wholesale style consultant. How can I help you today?",
+      "Hey there! 👗 Welcome to PaparazziByBiz! I'm your personal style assistant. How can I help you today?",
       "Hi! ✨ So glad you're here! Looking for the latest styles from our S/S 2026 collection? I'm here to help!",
-      "Welcome! 💕 I'm Biz's Style Assistant. Ask me about our wholesale women's fashion, trade shows, or sizing!",
+      "Welcome! 💕 I'm Biz's Style Assistant. Ask me about our women's fashion, sizing, or shipping!",
     ],
     products: [
       "Great taste! We have beautiful pieces in that category. Check out our newest arrivals from the S/S 2026 collection!",
       "You'll love our selection! From embroidered details to reversible jackets — all designed in LA. Browse our collections!",
-      "Fun choice! Here are some gorgeous styles that boutique owners are loving right now!",
+      "Fun choice! Here are some gorgeous styles that customers are loving right now!",
     ],
     pricing: [
-      "We offer competitive wholesale pricing for retail partners and boutique owners. Contact us or visit our Faire Market storefront for full pricing details! 💰",
-      "Our wholesale pricing is designed to give retailers great margins. Reach out to info@paparazzibybiz.com for a price list and minimum order details! 🛍️",
+      "We offer amazing prices on fashion designed right here in LA! Check out our current collection for great deals. 💰",
+      "Our prices are designed to make designer-quality fashion accessible to everyone. Browse our shop for the latest styles! 🛍️",
     ],
     shipping: [
-      "We ship nationwide! Most wholesale orders go out within 1–2 business days. Standard delivery is 3–5 business days. 📦",
+      "We ship nationwide! Most orders go out within 1–2 business days. Standard delivery is 3–5 business days. 📦",
       "Shipping is fast — most orders ship in 1–2 days and arrive within 3–5 business days! Contact us for volume shipping rates. 🚚",
     ],
-    retailPartner: [
-      "Becoming a Paparazzi by Biz retail partner is easy! Visit us at trade shows like Atlanta Apparel Market, browse our Faire storefront, or contact us directly. We'd love to work with your boutique!",
-      "We love working with boutique owners! You can order through Faire Market, meet us at upcoming trade shows, or email info@paparazzibybiz.com to get started.",
+    newArrivals: [
+      "We drop new styles every week! Check out our New Arrivals section for the freshest pieces — from embroidered tops to resort-ready coordinates!",
+      "New styles just landed! Head to our New Arrivals for the latest from our S/S 2026 collection. They go fast!",
     ],
     returns: [
       "We want you to love your order! If something isn't right, reach out within 30 days and we'll make it right. 💝",
       "No worries! We have a hassle-free 30-day return policy. Just contact us and we'll take care of you!",
     ],
-    tradeShows: [
-      "You can find us at these upcoming shows: Atlanta Apparel Market (March 30–April 2) and Trendz (April 19–21). We'd love to see you there! 🎪",
-      "We exhibit at major trade shows! Catch us at Atlanta Apparel Market and Trendz. We're also on Faire Market for easy online wholesale ordering.",
+    sizing: [
+      "Most of our styles are available from S to XL. Each product page has a detailed size chart. If you're between sizes, we recommend sizing up for a relaxed fit! 📏",
+      "Check the size chart on each product page for exact measurements. Most customers find our sizing runs true to standard US sizing!",
     ],
     default: [
       "That's a great question! Let me connect you with our team for the best answer. Reach us at info@paparazzibybiz.com or (213) 748-2900.",
@@ -53,11 +53,11 @@ const PBIZCRM = (() => {
 
   // Quick reply options
   const QUICK_REPLIES = [
-    { text: '� Browse Styles', action: 'browse' },
-    { text: '💰 Wholesale Pricing', action: 'pricing' },
-    { text: '🚚 Shipping Details', action: 'shipping' },
-    { text: '🎪 Trade Shows', action: 'tradeshows' },
-    { text: '🤝 Become a Partner', action: 'partner' },
+    { text: '👗 Browse Styles', action: 'browse' },
+    { text: '🆕 New Arrivals', action: 'newarrivals' },
+    { text: '🚚 Shipping Info', action: 'shipping' },
+    { text: '📏 Sizing Help', action: 'sizing' },
+    { text: '💰 Pricing', action: 'pricing' },
   ];
 
   /**
@@ -230,14 +230,47 @@ const PBIZCRM = (() => {
     // Track in CRM
     trackEvent('chatbot_message', { message: text });
 
-    // Generate response
+    // Try remote AI via CRM, fall back to local responses
     showTypingIndicator();
-    setTimeout(() => {
-      hideTypingIndicator();
-      const response = generateResponse(text);
-      appendBotMessage(response);
-      showQuickReplies();
-    }, 800 + Math.random() * 1200);
+    sendToRemoteAI(text)
+      .then(reply => {
+        hideTypingIndicator();
+        appendBotMessage(reply);
+        showQuickReplies();
+      })
+      .catch(() => {
+        hideTypingIndicator();
+        const response = generateResponse(text);
+        appendBotMessage(response);
+        showQuickReplies();
+      });
+  }
+
+  /**
+   * Send message to CRM's public AI chat endpoint
+   */
+  async function sendToRemoteAI(message) {
+    const config = window.PBIZ_CONFIG?.crm;
+    if (!config?.apiEndpoint || !config?.chatbot?.useRemoteAI) {
+      throw new Error('Remote AI not configured');
+    }
+
+    const response = await fetch(`${config.apiEndpoint}/api/public/chat`, {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({
+        message,
+        history: chatHistory.slice(-10).map(h => ({
+          role: h.role === 'bot' ? 'assistant' : h.role,
+          content: h.text,
+        })),
+      }),
+    });
+
+    if (!response.ok) throw new Error('AI request failed');
+    const data = await response.json();
+    if (!data.reply) throw new Error('No reply');
+    return data.reply;
   }
 
   function generateResponse(userMessage) {
@@ -250,17 +283,17 @@ const PBIZCRM = (() => {
     if (msg.match(/dress|top|blouse|jacket|cardigan|coordinate|resort|pant|skirt|kimono|clothing|fashion|style|product/)) {
       return pickRandom(AI_RESPONSES.products);
     }
-    if (msg.match(/price|cost|how much|\$|dollar|wholesale|minimum|order/)) {
+    if (msg.match(/price|cost|how much|\$|dollar|deal|sale|discount/)) {
       return pickRandom(AI_RESPONSES.pricing);
     }
     if (msg.match(/ship|deliver|order|track|arrival/)) {
       return pickRandom(AI_RESPONSES.shipping);
     }
-    if (msg.match(/partner|retail|boutique|store|buyer|wholesale account/)) {
-      return pickRandom(AI_RESPONSES.retailPartner);
+    if (msg.match(/new arrival|new style|latest|just dropped|new drop/)) {
+      return pickRandom(AI_RESPONSES.newArrivals);
     }
-    if (msg.match(/trade show|atlanta|apparel|market|faire|trendz|exhibit/)) {
-      return pickRandom(AI_RESPONSES.tradeShows);
+    if (msg.match(/size|sizing|fit|measurement|chart|xs|xl/)) {
+      return pickRandom(AI_RESPONSES.sizing);
     }
     if (msg.match(/return|refund|exchange|broken|damage|wrong/)) {
       return pickRandom(AI_RESPONSES.returns);
@@ -272,10 +305,11 @@ const PBIZCRM = (() => {
   function handleQuickReply(action) {
     const mappings = {
       browse: 'I want to browse your clothing collection!',
-      pricing: 'What are the wholesale prices?',
+      pricing: 'What are the prices?',
       shipping: 'What are the shipping options?',
-      tradeshows: 'What trade shows will you be at?',
-      partner: "I'm interested in becoming a retail partner",
+      newarrivals: 'Show me the new arrivals!',
+      sizing: 'What sizes do you carry?',
+      
       contact: 'How can I contact you?',
     };
 
@@ -384,7 +418,7 @@ const PBIZCRM = (() => {
     };
 
     saveLead(lead);
-    syncLeadToCRM(lead);
+    syncNewsletterToCRM(email);
 
     // Track the event
     trackEvent('newsletter_signup', { email });
@@ -420,7 +454,7 @@ const PBIZCRM = (() => {
     };
 
     saveLead(lead);
-    syncLeadToCRM(lead);
+    syncContactToCRM(formData);
     trackEvent('contact_form_submit', formData);
 
     return true;
@@ -436,32 +470,49 @@ const PBIZCRM = (() => {
     }
   }
 
-  async function syncLeadToCRM(lead) {
+  /**
+   * Send newsletter signup to CRM
+   */
+  async function syncNewsletterToCRM(email) {
     const config = window.PBIZ_CONFIG?.crm;
-    if (!config) return;
+    if (!config?.apiEndpoint) return;
 
     try {
-      // HubSpot
-      if (config.provider === 'hubspot' && config.hubspot?.portalId) {
-        const formId = config.hubspot.forms?.[lead.type];
-        if (formId) {
-          await fetch(`https://api.hsforms.com/submissions/v3/integration/submit/${config.hubspot.portalId}/${formId}`, {
-            method: 'POST',
-            headers: { 'Content-Type': 'application/json' },
-            body: JSON.stringify({
-              fields: Object.entries(lead).map(([name, value]) => ({ name, value: String(value) })),
-            }),
-          });
-        }
-      }
-
-      // Email marketing sync
-      const emailConfig = window.PBIZ_CONFIG?.email;
-      if (emailConfig?.provider === 'mailchimp' && lead.email) {
-        // Would POST to Mailchimp API
-      }
+      await fetch(`${config.apiEndpoint}/api/public/newsletter`, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          email,
+          source: window.location.pathname,
+        }),
+      });
     } catch (err) {
-      console.warn('Lead sync error:', err);
+      console.warn('Newsletter CRM sync error:', err);
+    }
+  }
+
+  /**
+   * Send contact form to CRM
+   */
+  async function syncContactToCRM(formData) {
+    const config = window.PBIZ_CONFIG?.crm;
+    if (!config?.apiEndpoint) return;
+
+    try {
+      await fetch(`${config.apiEndpoint}/api/public/contact`, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          firstName: formData.firstName || formData.name?.split(' ')[0] || 'Unknown',
+          lastName: formData.lastName || formData.name?.split(' ').slice(1).join(' ') || 'Visitor',
+          email: formData.email,
+          phone: formData.phone || null,
+          subject: formData.subject || null,
+          message: formData.message || null,
+        }),
+      });
+    } catch (err) {
+      console.warn('Contact CRM sync error:', err);
     }
   }
 
